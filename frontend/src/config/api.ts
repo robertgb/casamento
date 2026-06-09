@@ -2,7 +2,6 @@ import axios from "axios";
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
-// Interceptor para adicionar token JWT no header
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("admin_token");
   if (token) {
@@ -10,5 +9,18 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      !error.config?.url?.includes("/admin/login")
+    ) {
+      window.dispatchEvent(new CustomEvent("admin:unauthorized"));
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
+
+import AdminService from "../../services/AdminService";
 import { useAdmin } from "../../context/Admin/admin.hook";
 
 interface ProtectedRouteProps {
@@ -6,9 +9,17 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated } = useAdmin();
+  const { isAuthenticated, logout } = useAdmin();
 
-  if (!isAuthenticated) {
+  const tokenValid = isAuthenticated && AdminService.verifyToken();
+
+  useEffect(() => {
+    if (isAuthenticated && !tokenValid) {
+      logout();
+    }
+  }, [isAuthenticated, tokenValid, logout]);
+
+  if (!isAuthenticated || !tokenValid) {
     return <Navigate to="/admin/login" replace />;
   }
 

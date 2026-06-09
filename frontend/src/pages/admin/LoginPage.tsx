@@ -40,7 +40,9 @@ export default function LoginPage() {
     } catch (error: any) {
       setAlert({
         type: "error",
-        message: error.message || "Erro ao fazer login",
+        message:
+          error.response?.data?.message ||
+          "Credenciais incorretas. Verifique seu e-mail e senha.",
       });
     }
   };

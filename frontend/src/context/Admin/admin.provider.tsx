@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useState } from "react";
+import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 
 import AdminService, { Admin } from "../../services/AdminService";
 
@@ -7,7 +7,12 @@ import { AdminContext } from "./admin.context";
 export function AdminProvider({ children }: PropsWithChildren) {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [token, setToken] = useState<string | null>(() => {
-    return AdminService.getToken();
+    const stored = AdminService.getToken();
+    if (stored && !AdminService.verifyToken()) {
+      AdminService.removeToken();
+      return null;
+    }
+    return stored;
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +38,16 @@ export function AdminProvider({ children }: PropsWithChildren) {
     AdminService.removeToken();
     setToken(null);
     setAdmin(null);
+  }, []);
+
+  useEffect(() => {
+    const handler = () => {
+      AdminService.removeToken();
+      setToken(null);
+      setAdmin(null);
+    };
+    window.addEventListener("admin:unauthorized", handler);
+    return () => window.removeEventListener("admin:unauthorized", handler);
   }, []);
 
   const value = {

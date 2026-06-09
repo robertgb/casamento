@@ -90,46 +90,73 @@ export default function GuestsPage() {
             Nenhum convidado cadastrado
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">#</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nome</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Presença</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Presente</th>
-                </tr>
-              </thead>
-              <tbody>
-                {guests.map((guest) => (
-                  <tr key={guest.id} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-400">{guest.id}</td>
-                    <td className="px-6 py-4 text-sm text-gray-800 font-medium">{guest.name}</td>
-                    <td className="px-6 py-4 text-sm">
-                      {guest.confirmed ? (
-                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
-                          Confirmado
-                        </span>
-                      ) : (
-                        <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-medium">
-                          Pendente
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-sm">
-                      {guest.giftId !== null ? (
-                        <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-medium">
-                          #{guest.giftId}
-                        </span>
-                      ) : (
-                        <span className="text-gray-400 text-xs">—</span>
-                      )}
-                    </td>
+          <>
+            {/* Mobile: card list */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {guests.map((guest) => (
+                <div key={guest.id} className="p-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-800 truncate">{guest.name}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">#{guest.id}</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {guest.confirmed ? (
+                      <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Confirmado</span>
+                    ) : (
+                      <span className="bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full text-xs font-medium">Pendente</span>
+                    )}
+                    {guest.giftId !== null ? (
+                      <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs font-medium">#{guest.giftId}</span>
+                    ) : (
+                      <span className="text-gray-400 text-xs">—</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">#</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nome</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Presença</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Presente</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {guests.map((guest) => (
+                    <tr key={guest.id} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-400">{guest.id}</td>
+                      <td className="px-6 py-4 text-sm text-gray-800 font-medium">{guest.name}</td>
+                      <td className="px-6 py-4 text-sm">
+                        {guest.confirmed ? (
+                          <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                            Confirmado
+                          </span>
+                        ) : (
+                          <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-medium">
+                            Pendente
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        {guest.giftId !== null ? (
+                          <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-medium">
+                            #{guest.giftId}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 text-xs">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </Card>
     </AdminLayout>

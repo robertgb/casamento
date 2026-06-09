@@ -141,47 +141,78 @@ export default function GiftsCrudPage() {
             Nenhum presente cadastrado
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nome</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Descrição</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Preço</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Reservado</th>
-                  <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {gifts.map((gift) => (
-                  <tr key={gift.id} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-800">{gift.name}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">{gift.description}</td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      R$ {parseFloat(gift.price).toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 text-sm">
+          <>
+            {/* Mobile: card list */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {gifts.map((gift) => (
+                <div key={gift.id} className="p-4 flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-semibold text-gray-800 truncate">{gift.name}</p>
                       {gift.reserved ? (
-                        <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-medium">Sim</span>
+                        <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs font-medium shrink-0">Reservado</span>
                       ) : (
-                        <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">Não</span>
+                        <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs font-medium shrink-0">Disponível</span>
                       )}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" onClick={() => handleEditClick(gift)}>
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleDeleteClick(gift.id)}>
-                          <Trash2 className="w-4 h-4 text-red-600" />
-                        </Button>
-                      </div>
-                    </td>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{gift.description}</p>
+                    <p className="text-xs font-medium text-gray-700 mt-1">R$ {parseFloat(gift.price).toFixed(2)}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <Button variant="outline" size="sm" onClick={() => handleEditClick(gift)}>
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => handleDeleteClick(gift.id)}>
+                      <Trash2 className="w-4 h-4 text-red-600" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nome</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Descrição</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Preço</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Reservado</th>
+                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">Ações</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {gifts.map((gift) => (
+                    <tr key={gift.id} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-800">{gift.name}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">{gift.description}</td>
+                      <td className="px-6 py-4 text-sm text-gray-800">
+                        R$ {parseFloat(gift.price).toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        {gift.reserved ? (
+                          <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-medium">Sim</span>
+                        ) : (
+                          <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">Não</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" size="sm" onClick={() => handleEditClick(gift)}>
+                            <Edit2 className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleDeleteClick(gift.id)}>
+                            <Trash2 className="w-4 h-4 text-red-600" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </Card>
 
