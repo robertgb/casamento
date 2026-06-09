@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    // Layout dos Arquivos
+    "rootDir": ".", // Diretório raiz dos arquivos fonte TypeScript
+    "outDir": "./dist", // Diretório onde os arquivos JavaScript compilados serão salvos
+
+    // Configurações de Ambiente
+    "module": "nodenext", // Sistema de módulos usado (Node.js com suporte a ESM)
+    "target": "esnext", // Versão alvo do JavaScript (mais recente)
+    "types": [], // Lista de tipos a incluir (vazia para evitar tipos globais desnecessários)
+
+    // Outras Saídas
+    "sourceMap": true, // Gerar mapas de fonte para depuração
+    "declaration": false, // Não gerar arquivos de declaração (.d.ts)
+    "declarationMap": false, // Não gerar mapas para declarações
+
+    // Opções de Verificação de Tipos Mais Rigorosas
+    "noUncheckedIndexedAccess": true, // Verificar acesso indexado não verificado
+    "exactOptionalPropertyTypes": true, // Tipos opcionais exatos
+
+    // Opções Recomendadas
+    "strict": true, // Habilitar modo estrito de verificação de tipos
+    "verbatimModuleSyntax": true, // Preservar sintaxe de módulo verbatim
+    "isolatedModules": true, // Tratar cada arquivo como módulo isolado
+    "noUncheckedSideEffectImports": true, // Verificar imports que podem ter efeitos colaterais
+    "moduleDetection": "force", // Forçar detecção de módulos
+    "skipLibCheck": true, // Pular verificação de arquivos de biblioteca
+    "allowImportingTsExtensions": true, // Permitir imports com extensões .ts
+    "rewriteRelativeImportExtensions": true, // Reescrever extensões relativas de .ts para .js na saída
+    "moduleResolution": "nodenext" // Estratégia de resolução de módulos para Node.js
+  },
+  "include": [
+    "src/**/*.ts", // Incluir todos os arquivos .ts no diretório src
+    "generated/prisma/**/*.ts" // Incluir arquivos gerados pelo Prisma
+  ],
+  "exclude": [
+    "node_modules" // Excluir o diretório node_modules
+  ]
+}
