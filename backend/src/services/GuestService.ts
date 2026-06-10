@@ -9,9 +9,9 @@ import { prisma } from "../config/config.ts";
 class GuestService {
   async index(name?: string) {
     if (name) {
-      return await prisma.guest.findMany({ where: { name } });
+      return await prisma.guest.findMany({ where: { name }, include: { gift: true } });
     }
-    return await prisma.guest.findMany();
+    return await prisma.guest.findMany({ include: { gift: true } });
   }
 
   async create(data: GuestCreateInput) {

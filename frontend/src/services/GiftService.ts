@@ -11,6 +11,7 @@ export interface Gift {
   image: string;
   link: string;
   reserved: boolean;
+  reservedBy: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

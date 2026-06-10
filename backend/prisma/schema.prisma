@@ -22,6 +22,7 @@ model Gift {
   image       String
   link        String
   reserved    Boolean @default(false)
+  guest       Guest?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -32,7 +33,8 @@ model Guest {
 
   name      String
   confirmed Boolean @default(false)
-  giftId    Int?
+  giftId    Int?    @unique
+  gift      Gift?   @relation(fields: [giftId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -112,6 +112,8 @@ export default function GiftsCrudPage() {
     return () => clearTimeout(timer);
   }, [alert]);
 
+  const reservedGifts = gifts.filter((gift) => gift.reserved).length;
+
   return (
     <AdminLayout title="Presentes">
       {!!alert && (
@@ -123,6 +125,17 @@ export default function GiftsCrudPage() {
           />
         </div>
       )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <p className="text-sm text-gray-500">Total de presentes</p>
+          <p className="text-2xl font-semibold text-gray-800">{gifts.length}</p>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <p className="text-sm text-gray-500">Presentes reservados</p>
+          <p className="text-2xl font-semibold text-primary-600">{reservedGifts}</p>
+        </div>
+      </div>
 
       <div className="mb-6">
         <Button variant="primary" onClick={handleCreateClick}>
@@ -157,6 +170,9 @@ export default function GiftsCrudPage() {
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{gift.description}</p>
                     <p className="text-xs font-medium text-gray-700 mt-1">R$ {parseFloat(gift.price).toFixed(2)}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Reservado por: {gift.reservedBy ?? "—"}
+                    </p>
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <Button variant="outline" size="sm" onClick={() => handleEditClick(gift)}>
@@ -179,6 +195,7 @@ export default function GiftsCrudPage() {
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Descrição</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Preço</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Reservado</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Reservado por</th>
                     <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">Ações</th>
                   </tr>
                 </thead>
@@ -196,6 +213,9 @@ export default function GiftsCrudPage() {
                         ) : (
                           <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">Não</span>
                         )}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {gift.reservedBy ?? "—"}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">

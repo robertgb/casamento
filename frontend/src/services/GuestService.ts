@@ -3,11 +3,17 @@ import type { AxiosRequestConfig } from "axios";
 import api from "../config/api";
 import { Response } from "../types";
 
+export interface Gift {
+  id: number;
+  name: string;
+}
+
 export interface Guest {
   id: number;
   name: string;
   confirmed: boolean;
   giftId: number | null;
+  gift: Gift | null;
   createdAt: Date;
   updatedAt: Date;
 }

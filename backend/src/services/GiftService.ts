@@ -38,7 +38,15 @@ class GiftService {
   }
 
   async index() {
-    return await prisma.gift.findMany();
+    const gifts = await prisma.gift.findMany();
+    const giftIds = gifts.map((gift) => gift.id);
+    const guests = await prisma.guest.findMany({ where: { giftId: { in: giftIds } } });
+    const guestsByGiftId = new Map(guests.map((guest) => [guest.giftId, guest]));
+
+    return gifts.map((gift) => ({
+      ...gift,
+      reservedBy: guestsByGiftId.get(gift.id)?.name ?? null,
+    }));
   }
 
   async create(data: GiftCreateInput) {

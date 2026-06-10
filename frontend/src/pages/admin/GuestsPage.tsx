@@ -1,20 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import GuestService from "../../services/GuestService";
+import GuestService, { Guest } from "../../services/GuestService";
 
 import Alert from "../../components/ui/Alerts/Alert";
 import Card from "../../components/ui/Card";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import AdminLayout from "../../components/admin/AdminLayout";
-
-interface Guest {
-  id: number;
-  name: string;
-  confirmed: boolean;
-  giftId: number | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 type TAlert = {
   type: "error" | "success" | "warning";
@@ -30,7 +21,7 @@ export default function GuestsPage() {
     try {
       setIsLoading(true);
       const response = await GuestService.index();
-      setGuests((response.data as Guest[]) ?? []);
+      setGuests(response.data ?? []);
     } catch {
       setAlert({ type: "error", message: "Erro ao carregar convidados" });
     } finally {
@@ -98,17 +89,15 @@ export default function GuestsPage() {
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-800 truncate">{guest.name}</p>
                     <p className="text-xs text-gray-400 mt-0.5">#{guest.id}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Presente: {guest.gift?.name ?? "—"}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {guest.confirmed ? (
                       <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Confirmado</span>
                     ) : (
                       <span className="bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full text-xs font-medium">Pendente</span>
-                    )}
-                    {guest.giftId !== null ? (
-                      <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs font-medium">#{guest.giftId}</span>
-                    ) : (
-                      <span className="text-gray-400 text-xs">—</span>
                     )}
                   </div>
                 </div>
@@ -143,9 +132,9 @@ export default function GuestsPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 text-sm">
-                        {guest.giftId !== null ? (
+                        {guest.gift ? (
                           <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-medium">
-                            #{guest.giftId}
+                            {guest.gift.name}
                           </span>
                         ) : (
                           <span className="text-gray-400 text-xs">—</span>
